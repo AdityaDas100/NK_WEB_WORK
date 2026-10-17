@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+/**
+ * Design tokens.
+ *
+ * Tailwind v4 reads this block and generates the corresponding utilities
+ * (`bg-brand-600`, `text-brand-700`, `shadow-card`, ...), so the palette is defined once and used
+ * everywhere. A calm clinical blue/indigo scale built from the brand anchors #2e609b, #325394,
+ * #3f4097, #35488f and #3a3c88 (ordered light to dark so hover states always deepen).
+ * Light tints are derived from #2e609b for soft surfaces; every colour pair used for text meets
+ * WCAG AA contrast against its background.
+ */
+@theme {
+  --color-brand-50: #eef3fb;
+  --color-brand-100: #dbe7f7;
+  --color-brand-200: #bccfef;
+  --color-brand-300: #90aede;
+  --color-brand-400: #5d84c6;
+  --color-brand-500: #2e609b;
+  --color-brand-600: #325394;
+  --color-brand-700: #3f4097;
+  --color-brand-800: #35488f;
+  --color-brand-900: #3a3c88;
+  --color-brand-950: #22234e;
+
+  --color-ink-50: #f6f8fa;
+  --color-ink-100: #eaeff4;
+  --color-ink-200: #d3dde7;
+  --color-ink-300: #adbecd;
+  --color-ink-400: #7d94a8;
+  --color-ink-500: #5b7387;
+  --color-ink-600: #46596b;
+  --color-ink-700: #384857;
+  --color-ink-800: #23303c;
+  --color-ink-900: #16202a;
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    "Noto Sans", sans-serif;
+
+  --shadow-card: 0 1px 2px 0 rgb(15 23 42 / 0.05), 0 12px 28px -18px rgb(15 23 42 / 0.25);
+  --shadow-card-hover: 0 2px 6px 0 rgb(15 23 42 / 0.08), 0 22px 44px -22px rgb(15 23 42 / 0.3);
+  /* Bold blue lift shadow for product cards: the same #2e609b brand blue as the
+     page theme, deep enough to read as the card rising off the surface. */
+  --shadow-card-lift: 0 2px 6px 0 rgb(46 96 155 / 0.14), 0 30px 60px -20px rgb(46 96 155 / 0.5);
+
+  /* Reserved heights keep validation messages from shifting the layout. */
+  --spacing-field-message: 1.25rem;
+
+  /* Tidally-locked orbit for the brand medallion: the ring makes one
+     revolution while the logo stays put, always showing the same face.
+     Transform-only, so it stays on the compositor thread. */
+  --animate-orbit: orbit 16s linear infinite;
+
+  @keyframes orbit {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Sticky header height (96px): anchor targets stop below the header instead
+       of behind it. */
+    scroll-padding-top: 7rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: #ffffff;
+    color: var(--color-ink-700);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-200);
+    color: var(--color-ink-900);
+  }
+}
+
+/**
+ * Respect the operating system's motion preference. Only decorative motion is defined by this
+ * project, so disabling it entirely has no functional impact.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,66 @@
+# ---------------------------------------------------------------------------
+# Secrets and local state. Never commit any of these.
+# ---------------------------------------------------------------------------
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.*.local
+*.env.local
+
+
+# ---------------------------------------------------------------------------
+# Java / Maven (backend)
+# ---------------------------------------------------------------------------
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+!backend/.mvn/wrapper/maven-wrapper.properties
+*.class
+*.jar
+*.war
+hs_err_pid*.log
+replay_pid*.log
+
+# Runtime state: the exported workbook, its lock file and quarantined copies.
+# These are derived state; the database is the system of record (see docs/EXPORT.md).
+backend/data/
+backend/logs/
+*.xlsx
+*.xlsx.lock
+*.xlsx.*.corrupt
+
+# ---------------------------------------------------------------------------
+# Node / Next.js (frontend)
+# ---------------------------------------------------------------------------
+node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/next-env.d.ts
+frontend/tsconfig.tsbuildinfo
+*.tsbuildinfo
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ---------------------------------------------------------------------------
+# Tooling / IDE / OS
+# ---------------------------------------------------------------------------
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------------------------------------------------------------------------
+# Logs
+# ---------------------------------------------------------------------------
+*.log
+logs/

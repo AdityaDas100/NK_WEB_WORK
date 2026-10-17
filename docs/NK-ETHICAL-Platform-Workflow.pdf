@@ -1,0 +1,788 @@
+%PDF-1.7
+%ту╧╙
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [7 0 R 9 0 R 11 0 R 13 0 R 15 0 R 17 0 R] /Count 6 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier-Bold /Encoding /WinAnsiEncoding >>
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 8 0 R >>
+endobj
+8 0 obj
+<< /Length 6647 >>
+stream
+0.18 0.38 0.61 rg
+BT /F2 22 Tf 1 0 0 1 56.00 761.85 Tm (NK ETHICAL \(IND\) LTD - Web Platform) Tj ET
+0.24 0.27 0.33 rg
+BT /F1 12.5 Tf 1 0 0 1 56.00 742.64 Tm (Workflow, Data Flow and System Design Decisions) Tj ET
+0.42 0.45 0.50 rg
+BT /F1 9 Tf 1 0 0 1 56.00 724.51 Tm (Technical overview | 17 October 2026 | Prepared for NK ETHICAL \(IND\) LTD) Tj ET
+0.82 0.85 0.90 RG 0.80 w 56.00 715.39 m 539.28 715.39 l S
+0.13 0.16 0.20 rg
+BT /F1 10.5 Tf 1 0 0 1 56.00 700.78 Tm (This document explains, in simple words, how the platform works from end to end: what the visitor does,) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.5 Tf 1 0 0 1 56.00 685.87 Tm (what each part of the system does with the data, and why each design choice was made. It is written for) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.5 Tf 1 0 0 1 56.00 670.96 Tm (a reader who knows the business, not for a reader who will maintain the code.) Tj ET
+0.21 0.28 0.56 rg
+BT /F2 15 Tf 1 0 0 1 56.00 633.36 Tm (1. What this system does) Tj ET
+0.82 0.85 0.90 RG 1.00 w 56.00 627.66 m 539.28 627.66 l S
+0.13 0.16 0.20 rg
+BT /F1 10.5 Tf 1 0 0 1 56.00 606.05 Tm (This is a company website with a contact form, plus the machinery that runs behind the form. A visitor) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.5 Tf 1 0 0 1 56.00 591.14 Tm (reads the product list, sends an inquiry, and gets a reference number. Behind the scenes the inquiry is) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.5 Tf 1 0 0 1 56.00 576.23 Tm (saved to a database first and then copied into a spreadsheet by itself. The spreadsheet can always be) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.5 Tf 1 0 0 1 56.00 561.32 Tm (rebuilt from the database.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.5 Tf 1 0 0 1 56.00 539.41 Tm (Three jobs, handled by three separate parts:) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 517.66 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 517.66 Tm (Show the website. Fast, mostly plain pages with very little browser code.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 498.26 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 498.26 Tm (Receive the inquiry and store it safely.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 478.86 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 478.86 Tm (Copy stored inquiries into a spreadsheet, by itself, and never lose one.) Tj ET
+0.21 0.28 0.56 rg
+BT /F2 15 Tf 1 0 0 1 56.00 443.61 Tm (2. The parts of the system) Tj ET
+0.82 0.85 0.90 RG 1.00 w 56.00 437.91 m 539.28 437.91 l S
+0.18 0.38 0.61 rg 56.00 400.69 483.28 24.22 re f
+1.00 1.00 1.00 rg
+BT /F2 9.4 Tf 1 0 0 1 63.00 411.20 Tm (Part) Tj ET
+1.00 1.00 1.00 rg
+BT /F2 9.4 Tf 1 0 0 1 154.82 411.20 Tm (Built with) Tj ET
+1.00 1.00 1.00 rg
+BT /F2 9.4 Tf 1 0 0 1 294.97 411.20 Tm (Its one job) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 387.15 Tm (Website) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 154.82 387.15 Tm (Next.js 16, React 19, Tailwind) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 154.82 375.15 Tm (4) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 294.97 387.15 Tm (Show pages and the form. Pages are sent as ready-made) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 294.97 375.15 Tm (HTML; the browser runs only a little code.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 364.69 m 539.28 364.69 l S
+0.96 0.97 0.99 rg 56.00 328.69 483.28 36.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 351.15 Tm (Website server) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 154.82 351.15 Tm (Next.js route handler \(Node.js\)) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 294.97 351.15 Tm (Own the public form address. Check the request again,) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 294.97 339.15 Tm (then pass it to the intake service.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 328.69 m 539.28 328.69 l S
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 315.15 Tm (Intake service) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 154.82 315.15 Tm (Spring Boot 4.1, Java 25) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 294.97 315.15 Tm (Clean the data, check the data, save the data. This is the) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 294.97 303.15 Tm (trusted gate.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 292.69 m 539.28 292.69 l S
+0.96 0.97 0.99 rg 56.00 268.69 483.28 24.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 279.15 Tm (Data store) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 154.82 279.15 Tm (PostgreSQL 16) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 294.97 279.15 Tm (Hold every inquiry. It is the one and only source of truth.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 268.69 m 539.28 268.69 l S
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 255.15 Tm (Export worker) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 154.82 255.15 Tm (Background job inside the) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 154.82 243.15 Tm (intake service) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 294.97 255.15 Tm (Copy new inquiries into Excel and/or Google Sheets.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 232.69 m 539.28 232.69 l S
+0.96 0.97 0.99 rg 56.00 196.69 483.28 36.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 219.15 Tm (Documents) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 154.82 219.15 Tm (docs folder in the project) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 294.97 219.15 Tm (Architecture, security, export runbook and the API) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 294.97 207.15 Tm (contract.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 196.69 m 539.28 196.69 l S
+0.21 0.28 0.56 rg
+BT /F2 15 Tf 1 0 0 1 56.00 163.39 Tm (3. Step-by-step workflow) Tj ET
+0.82 0.85 0.90 RG 1.00 w 56.00 157.69 m 539.28 157.69 l S
+0.13 0.16 0.20 rg
+BT /F1 10.5 Tf 1 0 0 1 56.00 136.08 Tm (This is the life of one inquiry, from the visitor to the spreadsheet.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.4 Tf 1 0 0 1 56.00 114.25 Tm (1.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 114.25 Tm (The visitor opens the site. The server sends finished HTML. The browser runs only the small) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 99.75 Tm (amount of code the page needs.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.4 Tf 1 0 0 1 56.00 79.25 Tm (2.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 79.25 Tm (The visitor fills the form and presses Send. The browser checks the fields first, for quick feedback.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 64.75 Tm (Nothing is sent while a field is clearly wrong.) Tj ET
+0.42 0.45 0.50 rg
+BT /F1 8 Tf 1 0 0 1 56.00 40.00 Tm (NK ETHICAL \(IND\) LTD - Web Platform) Tj ET
+0.42 0.45 0.50 rg
+BT /F1 8 Tf 1 0 0 1 498.36 40.00 Tm (Page 1 of 6) Tj ET
+0.82 0.85 0.90 RG 0.5 w 56.00 52.00 m 539.28 52.00 l S
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 10 0 R >>
+endobj
+10 0 obj
+<< /Length 6513 >>
+stream
+0.21 0.28 0.56 rg
+BT /F1 10.4 Tf 1 0 0 1 56.00 777.36 Tm (3.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 777.36 Tm (The browser sends the form data to /api/inquiries on the same website address. It also sends a) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 762.86 Tm (random Idempotency-Key and fills a hidden field that only a robot would touch \(the honeypot\).) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.4 Tf 1 0 0 1 56.00 742.36 Tm (4.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 742.36 Tm (The website server checks the request: it refuses anything larger than 16 KB before reading it; it) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 727.86 Tm (counts requests per visitor address \(10 per minute, 5 at once, 600 per minute for everyone\) and) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 713.36 Tm (answers 429 when there are too many; if the hidden field was filled it pretends to succeed and drops) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 698.86 Tm (the request; it checks the data again with the same rules as the browser; then it forwards the data to) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 684.36 Tm (the intake service with the same key and a request id.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.4 Tf 1 0 0 1 56.00 663.86 Tm (5.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 663.86 Tm (The intake service adds a request id to the logs; applies its own size and rate checks; cleans the) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 649.36 Tm (data first \(removes markup and control characters, normalises text, cuts it to the allowed length\);) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 634.86 Tm (checks the cleaned data; then looks up the Idempotency-Key. If the key already exists it returns the) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 620.36 Tm (same reference and saves nothing new.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.4 Tf 1 0 0 1 56.00 599.86 Tm (6.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 599.86 Tm (If the key is new, the service saves exactly one row to PostgreSQL and answers 201 with the) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 585.36 Tm (reference number. The save and the export trigger happen in one transaction, so a failed save can) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 570.86 Tm (never start an export.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.4 Tf 1 0 0 1 56.00 550.36 Tm (7.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 550.36 Tm (A background worker wakes up right after the save \(and again every 15 seconds as a safety net\). It) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 535.86 Tm (takes up to 250 not-yet-exported rows and writes them to the spreadsheet.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.4 Tf 1 0 0 1 56.00 515.36 Tm (8.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 515.36 Tm (The website shows the success panel with the reference number, and the visitor is done.) Tj ET
+0.21 0.28 0.56 rg
+BT /F2 15 Tf 1 0 0 1 56.00 479.09 Tm (4. Data flow in one picture) Tj ET
+0.82 0.85 0.90 RG 1.00 w 56.00 473.39 m 539.28 473.39 l S
+0.94 0.96 0.99 rg 56.00 174.43 483.28 285.96 re f
+0.82 0.85 0.90 RG 0.8 w 56.00 174.43 483.28 285.96 re S
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 443.71 Tm (visitor) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 432.15 Tm (   |  fills the form) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 420.59 Tm (   v) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 409.02 Tm (browser  --\(quick field check\)-->  POST /api/inquiries   \(same website address\)) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 397.46 Tm (                                        |) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 385.90 Tm (                                        |  size check -> rate limit -> honeypot -> check again) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 374.33 Tm (                                        v) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 362.77 Tm (                              website server \(Node.js\)) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 351.21 Tm (                                        |) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 339.64 Tm (                                        |  forward with Idempotency-Key + request id) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 328.08 Tm (                                        v) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 316.51 Tm (                              intake service \(Spring Boot\)) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 304.95 Tm (                                        |) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 293.39 Tm (                                        |  clean data -> check data -> look up key) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 281.82 Tm (                                        v) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 270.26 Tm (                              PostgreSQL: inquiries table   \(one row = one inquiry\)) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 258.70 Tm (                                        |) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 247.13 Tm (                                        |  the same transaction publishes a "created" event) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 235.57 Tm (                                        v) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 224.01 Tm (                              export worker  --\(right after save, and every 15 s\)-->) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 212.44 Tm (                                        |) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 200.88 Tm (                                        v) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.143262411347518 Tf 1 0 0 1 68.00 189.32 Tm (                              Excel file \(.xlsx\)   and / or   Google Sheet) Tj ET
+0.42 0.45 0.50 rg
+BT /F1 8 Tf 1 0 0 1 56.00 40.00 Tm (NK ETHICAL \(IND\) LTD - Web Platform) Tj ET
+0.42 0.45 0.50 rg
+BT /F1 8 Tf 1 0 0 1 498.36 40.00 Tm (Page 2 of 6) Tj ET
+0.82 0.85 0.90 RG 0.5 w 56.00 52.00 m 539.28 52.00 l S
+endstream
+endobj
+11 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 12 0 R >>
+endobj
+12 0 obj
+<< /Length 7009 >>
+stream
+0.21 0.28 0.56 rg
+BT /F2 15 Tf 1 0 0 1 56.00 773.59 Tm (5. What is stored \(the inquiries table\)) Tj ET
+0.82 0.85 0.90 RG 1.00 w 56.00 767.89 m 539.28 767.89 l S
+0.13 0.16 0.20 rg
+BT /F1 10.5 Tf 1 0 0 1 56.00 746.28 Tm (One row equals one inquiry. The row is written before the visitor is answered, so the reference number) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.5 Tf 1 0 0 1 56.00 731.37 Tm (always points at data that really exists.) Tj ET
+0.18 0.38 0.61 rg 56.00 693.85 483.28 24.22 re f
+1.00 1.00 1.00 rg
+BT /F2 9.4 Tf 1 0 0 1 63.00 704.36 Tm (Group of columns) Tj ET
+1.00 1.00 1.00 rg
+BT /F2 9.4 Tf 1 0 0 1 178.99 704.36 Tm (Example columns) Tj ET
+1.00 1.00 1.00 rg
+BT /F2 9.4 Tf 1 0 0 1 352.97 704.36 Tm (Why it exists) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 680.31 Tm (Identity) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 178.99 680.31 Tm (id, public_id) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 352.97 680.31 Tm (id is private; public_id is the reference the) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 352.97 668.31 Tm (visitor sees.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 657.85 m 539.28 657.85 l S
+0.96 0.97 0.99 rg 56.00 621.85 483.28 36.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 644.31 Tm (Repeat protection) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 178.99 644.31 Tm (client_request_id \(unique\)) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 352.97 644.31 Tm (The same request sent twice results in one) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 352.97 632.31 Tm (row.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 621.85 m 539.28 621.85 l S
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 608.31 Tm (The inquiry) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 178.99 608.31 Tm (name, email, phone, company,) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 178.99 596.31 Tm (message, consent) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 352.97 608.31 Tm (Cleaned data. Column sizes match the form) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 352.97 596.31 Tm (limits exactly.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 585.85 m 539.28 585.85 l S
+0.96 0.97 0.99 rg 56.00 549.85 483.28 36.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 572.31 Tm (Export state) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 178.99 572.31 Tm (export_status, export_attempts,) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 178.99 560.31 Tm (export_error, exported_at) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 352.97 572.31 Tm (Follows the copy to the spreadsheet.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 549.85 m 539.28 549.85 l S
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 536.31 Tm (Abuse facts) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 178.99 536.31 Tm (source_ip_hash, user_agent) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 352.97 536.31 Tm (A keyed code for the address, never the) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 352.97 524.31 Tm (real address.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 513.85 m 539.28 513.85 l S
+0.96 0.97 0.99 rg 56.00 477.85 483.28 36.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 500.31 Tm (Bookkeeping) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 178.99 500.31 Tm (created_at, updated_at, version) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 352.97 500.31 Tm (Times, plus a counter that stops two) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 352.97 488.31 Tm (workers overwriting each other.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 477.85 m 539.28 477.85 l S
+0.21 0.28 0.56 rg
+BT /F2 15 Tf 1 0 0 1 56.00 444.55 Tm (6. How the spreadsheet copy works) Tj ET
+0.82 0.85 0.90 RG 1.00 w 56.00 438.85 m 539.28 438.85 l S
+0.13 0.16 0.20 rg
+BT /F1 10.5 Tf 1 0 0 1 56.00 417.24 Tm (Each row moves through a small set of states. A row can never be silently dropped; it is either exported) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.5 Tf 1 0 0 1 56.00 402.33 Tm (or parked for a person.) Tj ET
+0.94 0.96 0.99 rg 56.00 307.97 483.28 81.06 re f
+0.82 0.85 0.90 RG 0.8 w 56.00 307.97 483.28 81.06 re S
+0.13 0.16 0.20 rg
+BT /F3 8.6 Tf 1 0 0 1 68.00 371.98 Tm (PENDING  ->  PROCESSING  ->  EXPORTED) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.6 Tf 1 0 0 1 68.00 359.77 Tm (                  |) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.6 Tf 1 0 0 1 68.00 347.55 Tm (                  +-->  back to PENDING   \(temporary problem: retry\)) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.6 Tf 1 0 0 1 68.00 335.34 Tm (                  |) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.6 Tf 1 0 0 1 68.00 323.13 Tm (                  +-->  FAILED            \(too many tries: a person must look\)) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.4 Tf 1 0 0 1 56.00 292.44 Tm (1.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 292.44 Tm (The worker asks the database for the next batch: up to 250 rows that are PENDING and have been) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 277.94 Tm (tried fewer than 6 times. It locks those rows so no other worker can take the same ones. Oldest row) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 263.44 Tm (first, so the sheet stays in time order.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.4 Tf 1 0 0 1 56.00 242.94 Tm (2.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 242.94 Tm (The rows become PROCESSING and the database connection is closed immediately. Slow) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 228.44 Tm (spreadsheet work never holds a database connection.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.4 Tf 1 0 0 1 56.00 207.94 Tm (3.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 207.94 Tm (The worker writes the batch to every configured sink: the Excel file, the Google Sheet, or both.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.4 Tf 1 0 0 1 56.00 187.44 Tm (4.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 187.44 Tm (On success the rows become EXPORTED. Writing the same reference twice is skipped, so a retry) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 172.94 Tm (never duplicates a row.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.4 Tf 1 0 0 1 56.00 152.44 Tm (5.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 152.44 Tm (On failure the rows go back to PENDING, the try count goes up, and the reason is saved. After 6) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.4 Tf 1 0 0 1 78.00 137.94 Tm (failed tries a row becomes FAILED and an alarm should fire.) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 11.2 Tf 1 0 0 1 56.00 112.79 Tm (Safety nets) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 94.52 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 94.52 Tm (A save triggers the worker immediately, so the spreadsheet is usually up to date within a moment.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 75.12 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 75.12 Tm (A timer runs every 15 seconds. It puts rows that were stuck in PROCESSING for more than 5 minutes) Tj ET
+0.42 0.45 0.50 rg
+BT /F1 8 Tf 1 0 0 1 56.00 40.00 Tm (NK ETHICAL \(IND\) LTD - Web Platform) Tj ET
+0.42 0.45 0.50 rg
+BT /F1 8 Tf 1 0 0 1 498.36 40.00 Tm (Page 3 of 6) Tj ET
+0.82 0.85 0.90 RG 0.5 w 56.00 52.00 m 539.28 52.00 l S
+endstream
+endobj
+13 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 14 0 R >>
+endobj
+14 0 obj
+<< /Length 7719 >>
+stream
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 777.44 Tm (back into the queue \(this covers a crash\), then drains whatever is pending.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 758.04 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 758.04 Tm (The Excel file is written to a temporary name and then swapped in with one atomic move, so a reader) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 743.64 Tm (never sees half a file.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 724.24 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 724.24 Tm (Two locks protect the Excel file: one inside the process and one across processes \(a file lock\). Both) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 709.84 Tm (are needed, because they stop different problems.) Tj ET
+0.21 0.28 0.56 rg
+BT /F2 15 Tf 1 0 0 1 56.00 674.59 Tm (7. When something goes wrong) Tj ET
+0.82 0.85 0.90 RG 1.00 w 56.00 668.89 m 539.28 668.89 l S
+0.18 0.38 0.61 rg 56.00 631.67 483.28 24.22 re f
+1.00 1.00 1.00 rg
+BT /F2 9.4 Tf 1 0 0 1 63.00 642.18 Tm (Problem) Tj ET
+1.00 1.00 1.00 rg
+BT /F2 9.4 Tf 1 0 0 1 256.31 642.18 Tm (What the system does) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 618.13 Tm (Database is down) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 618.13 Tm (Answers 503. Nothing is saved and nothing is exported. No) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 606.13 Tm (half-done work.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 595.67 m 539.28 595.67 l S
+0.96 0.97 0.99 rg 56.00 571.67 483.28 24.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 582.13 Tm (The same request arrives twice) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 582.13 Tm (Returns the first reference. No second row is created.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 571.67 m 539.28 571.67 l S
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 558.13 Tm (Spreadsheet sink is down or the disk is full) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 558.13 Tm (Rows go back to PENDING and are retried later.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 547.67 m 539.28 547.67 l S
+0.96 0.97 0.99 rg 56.00 523.67 483.28 24.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 534.13 Tm (Six tries all fail) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 534.13 Tm (The row is parked as FAILED and counted, so a person is alerted.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 523.67 m 539.28 523.67 l S
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 510.13 Tm (The process is killed mid-export) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 510.13 Tm (After 5 minutes the timer puts the rows back in the queue.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 499.67 m 539.28 499.67 l S
+0.96 0.97 0.99 rg 56.00 475.67 483.28 24.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 486.13 Tm (The Excel file is open in Excel by a person) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 486.13 Tm (Treated as a temporary problem and retried.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 475.67 m 539.28 475.67 l S
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 462.13 Tm (The Excel file is damaged) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 462.13 Tm (Set aside and rebuilt from the database.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 451.67 m 539.28 451.67 l S
+0.21 0.28 0.56 rg
+BT /F2 15 Tf 1 0 0 1 56.00 418.37 Tm (8. Why it was built this way \(design decisions\)) Tj ET
+0.82 0.85 0.90 RG 1.00 w 56.00 412.67 m 539.28 412.67 l S
+0.18 0.38 0.61 rg 56.00 375.45 483.28 24.22 re f
+1.00 1.00 1.00 rg
+BT /F2 9.4 Tf 1 0 0 1 63.00 385.96 Tm (Decision) Tj ET
+1.00 1.00 1.00 rg
+BT /F2 9.4 Tf 1 0 0 1 256.31 385.96 Tm (Why) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 361.91 Tm (Save to the database before answering the) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 349.91 Tm (visitor) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 361.91 Tm (The reference number is always backed by a saved row. The) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 349.91 Tm (system never promises something it has not stored.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 339.45 m 539.28 339.45 l S
+0.96 0.97 0.99 rg 56.00 303.45 483.28 36.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 325.91 Tm (The database is the one source of truth; the) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 313.91 Tm (sheet is a copy) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 325.91 Tm (The sheet can be rebuilt at any time. A spreadsheet problem can) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 313.91 Tm (never lose a lead.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 303.45 m 539.28 303.45 l S
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 289.91 Tm (Queue the export inside the database) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 277.91 Tm (\(outbox\) instead of a message broker) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 289.91 Tm (The database itself holds the retries. No extra server to run, and no) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 277.91 Tm (message can be lost.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 267.45 m 539.28 267.45 l S
+0.96 0.97 0.99 rg 56.00 231.45 483.28 36.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 253.91 Tm (The same key sent twice makes one row) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 253.91 Tm (A double click, a retry, or a repeated network request cannot create) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 241.91 Tm (a duplicate lead.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 231.45 m 539.28 231.45 l S
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 217.91 Tm (Clean the data before checking it) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 217.91 Tm (Checking raw text can accept text that only looks safe, or reject text) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 205.91 Tm (that is fine after cleaning. Cleaning first fixes both problems.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 195.45 m 539.28 195.45 l S
+0.96 0.97 0.99 rg 56.00 159.45 483.28 36.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 181.91 Tm (Form limits equal the database column) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 169.91 Tm (sizes) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 181.91 Tm (Data that passes the check can never be cut short or rejected by) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 169.91 Tm (the database.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 159.45 m 539.28 159.45 l S
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 145.91 Tm (Check in three places \(browser, website) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 133.91 Tm (server, intake service\)) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 145.91 Tm (The browser check is for comfort. The other two are the real guard.) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 133.91 Tm (The server never trusts the browser.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 123.45 m 539.28 123.45 l S
+0.96 0.97 0.99 rg 56.00 87.45 483.28 36.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 109.91 Tm (The website server sits in front of the intake) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 97.91 Tm (service) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 109.91 Tm (The intake service does not need to be reachable from the internet.) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 97.91 Tm (This removes cross-site traffic and shrinks the attack surface.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 87.45 m 539.28 87.45 l S
+0.42 0.45 0.50 rg
+BT /F1 8 Tf 1 0 0 1 56.00 40.00 Tm (NK ETHICAL \(IND\) LTD - Web Platform) Tj ET
+0.42 0.45 0.50 rg
+BT /F1 8 Tf 1 0 0 1 498.36 40.00 Tm (Page 4 of 6) Tj ET
+0.82 0.85 0.90 RG 0.5 w 56.00 52.00 m 539.28 52.00 l S
+endstream
+endobj
+15 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 16 0 R >>
+endobj
+16 0 obj
+<< /Length 6602 >>
+stream
+0.18 0.38 0.61 rg 56.00 761.67 483.28 24.22 re f
+1.00 1.00 1.00 rg
+BT /F2 9.4 Tf 1 0 0 1 63.00 772.18 Tm (Decision) Tj ET
+1.00 1.00 1.00 rg
+BT /F2 9.4 Tf 1 0 0 1 256.31 772.18 Tm (Why) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 748.13 Tm (Three sizes of rate limit \(per minute, burst,) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 736.13 Tm (all users\)) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 748.13 Tm (One limit cannot cover both a slow trickle and a sudden flood.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 725.67 m 539.28 725.67 l S
+0.96 0.97 0.99 rg 56.00 677.67 483.28 48.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 712.13 Tm (No personal data in the logs) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 712.13 Tm (Logs are copied around. Names, e-mails and phones are masked;) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 700.13 Tm (a message is logged as a length, not its text; an address is stored) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 688.13 Tm (only as a keyed code.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 677.67 m 539.28 677.67 l S
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 664.13 Tm (Hold the database connection only while) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 652.13 Tm (claiming rows) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 664.13 Tm (Slow spreadsheet work cannot use up the database connection) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 652.13 Tm (pool.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 641.67 m 539.28 641.67 l S
+0.96 0.97 0.99 rg 56.00 605.67 483.28 36.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 628.13 Tm (Write the file to a temporary name, then) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 616.13 Tm (swap) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 628.13 Tm (No reader ever sees a half-written file.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 605.67 m 539.28 605.67 l S
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 592.13 Tm (No code generators in the intake service) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 592.13 Tm (Fewer build tools means fewer build failures. Plain, boring code is) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 580.13 Tm (safe code.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 569.67 m 539.28 569.67 l S
+0.96 0.97 0.99 rg 56.00 533.67 483.28 36.00 re f
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 556.13 Tm (Keep the pages static and delay the form) Tj ET
+0.13 0.16 0.20 rg
+BT /F2 9.2 Tf 1 0 0 1 63.00 544.13 Tm (code) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 556.13 Tm (The page paints without waiting for the heavy form code, so the) Tj ET
+0.22 0.25 0.30 rg
+BT /F1 9.2 Tf 1 0 0 1 256.31 544.13 Tm (main thread stays free and the page feels instant.) Tj ET
+0.82 0.85 0.90 RG 0.50 w 56.00 533.67 m 539.28 533.67 l S
+0.21 0.28 0.56 rg
+BT /F2 15 Tf 1 0 0 1 56.00 500.37 Tm (9. Privacy and safety choices) Tj ET
+0.82 0.85 0.90 RG 1.00 w 56.00 494.67 m 539.28 494.67 l S
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 473.22 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 473.22 Tm (The real visitor address is never stored. Only a keyed code is stored, so the same address can be) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 458.82 Tm (recognised without keeping the address.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 439.42 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 439.42 Tm (Markup and control characters are removed from every field, so stored text can never run as code in) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 425.02 Tm (the database, in a CSV export, or in a spreadsheet viewer.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 405.62 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 405.62 Tm (Spreadsheet formulas are defused: a leading = or + is neutralised so a cell cannot run as a formula.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 386.22 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 386.22 Tm (A hidden field catches simple robots. It gets a fake success and the request is dropped, so the robot) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 371.82 Tm (stops trying.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 352.42 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 352.42 Tm (Security headers \(content rules, HTTPS rules, frame blocking\) are set in one central place.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 333.02 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 333.02 Tm (In production the service refuses to start with a sample secret, an empty list of allowed sites, or HTTPS) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 318.62 Tm (turned off.) Tj ET
+0.21 0.28 0.56 rg
+BT /F2 15 Tf 1 0 0 1 56.00 283.37 Tm (10. Front-end speed choices) Tj ET
+0.82 0.85 0.90 RG 1.00 w 56.00 277.67 m 539.28 277.67 l S
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 256.22 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 256.22 Tm (Pages are built on the server. The product list filters with plain CSS and only a little code.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 236.82 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 236.82 Tm (The heavy form-checking code is held back until it is really needed, then loaded in a quiet moment.) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 222.42 Tm (This cut the first-load code by about 20% and moved the checking library out of the first load.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 203.02 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 203.02 Tm (Before heavy work continues, the code gives the main thread back, so a scroll or a tap is not delayed.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 183.62 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 183.62 Tm (Every field reserves space for its message, and the form reserves its full height, so the page never) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 169.22 Tm (jumps.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 149.82 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 149.82 Tm (The logo and its moving ring use a transform-only animation, which the browser can run off the main) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 135.42 Tm (thread.) Tj ET
+0.42 0.45 0.50 rg
+BT /F1 8 Tf 1 0 0 1 56.00 40.00 Tm (NK ETHICAL \(IND\) LTD - Web Platform) Tj ET
+0.42 0.45 0.50 rg
+BT /F1 8 Tf 1 0 0 1 498.36 40.00 Tm (Page 5 of 6) Tj ET
+0.82 0.85 0.90 RG 0.5 w 56.00 52.00 m 539.28 52.00 l S
+endstream
+endobj
+17 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 18 0 R >>
+endobj
+18 0 obj
+<< /Length 3006 >>
+stream
+0.21 0.28 0.56 rg
+BT /F2 15 Tf 1 0 0 1 56.00 773.59 Tm (11. How to run and check it) Tj ET
+0.82 0.85 0.90 RG 1.00 w 56.00 767.89 m 539.28 767.89 l S
+0.94 0.96 0.99 rg 56.00 612.77 483.28 142.12 re f
+0.82 0.85 0.90 RG 0.8 w 56.00 612.77 483.28 142.12 re S
+0.13 0.16 0.20 rg
+BT /F3 8.6 Tf 1 0 0 1 68.00 737.84 Tm (docker compose up --build) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.6 Tf 1 0 0 1 68.00 725.63 Tm () Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.6 Tf 1 0 0 1 68.00 713.41 Tm (  website         http://localhost:3000) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.6 Tf 1 0 0 1 68.00 701.20 Tm (  intake service  http://localhost:8080) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.6 Tf 1 0 0 1 68.00 688.99 Tm (  database        localhost:5432) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.6 Tf 1 0 0 1 68.00 676.78 Tm (  excel file      in the docker volume: /app/data/exports/inquiries.xlsx) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.6 Tf 1 0 0 1 68.00 664.57 Tm () Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.6 Tf 1 0 0 1 68.00 652.35 Tm (checks) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.6 Tf 1 0 0 1 68.00 640.14 Tm (  backend   :  mvn verify) Tj ET
+0.13 0.16 0.20 rg
+BT /F3 8.6 Tf 1 0 0 1 68.00 627.93 Tm (  frontend  :  npm run typecheck  &&  npm run lint  &&  npm run build) Tj ET
+0.21 0.28 0.56 rg
+BT /F2 15 Tf 1 0 0 1 56.00 581.47 Tm (12. Known limits and trade-offs) Tj ET
+0.82 0.85 0.90 RG 1.00 w 56.00 575.77 m 539.28 575.77 l S
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 554.32 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 554.32 Tm (Rate limiting is kept in memory, so it fits a single intake instance. Running several instances needs a) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 539.92 Tm (shared counter \(Redis or a firewall\).) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 520.52 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 520.52 Tm (The Excel file is rewritten for each batch. At a few hundred rows a batch this takes milliseconds; at a) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 506.12 Tm (very high volume, switch to daily files or the Google Sheet sink.) Tj ET
+0.21 0.28 0.56 rg
+BT /F1 10.3 Tf 1 0 0 1 56.00 486.72 Tm (Х) Tj ET
+0.13 0.16 0.20 rg
+BT /F1 10.3 Tf 1 0 0 1 70.00 486.72 Tm (The Google Sheets sink needs a webhook address. Without it, only the Excel sink is active.) Tj ET
+0.98 0.96 0.90 rg 56.00 425.77 483.28 46.00 re f
+0.85 0.70 0.35 RG 0.8 w 56.00 425.77 483.28 46.00 re S
+0.32 0.20 0.02 rg 56.00 425.77 3.00 46.00 re f
+0.28 0.20 0.06 rg
+BT /F1 10 Tf 1 0 0 1 68.00 454.57 Tm (In one line: the visitor's inquiry is saved to the database first, the spreadsheet is only a copy, and every) Tj ET
+0.28 0.20 0.06 rg
+BT /F1 10 Tf 1 0 0 1 68.00 440.57 Tm (part of the path from the browser to the spreadsheet is checked, retried, and safe to run twice.) Tj ET
+0.42 0.45 0.50 rg
+BT /F1 8 Tf 1 0 0 1 56.00 40.00 Tm (NK ETHICAL \(IND\) LTD - Web Platform) Tj ET
+0.42 0.45 0.50 rg
+BT /F1 8 Tf 1 0 0 1 498.36 40.00 Tm (Page 6 of 6) Tj ET
+0.82 0.85 0.90 RG 0.5 w 56.00 52.00 m 539.28 52.00 l S
+endstream
+endobj
+xref
+0 19
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000155 00000 n 
+0000000252 00000 n 
+0000000354 00000 n 
+0000000449 00000 n 
+0000000549 00000 n 
+0000000711 00000 n 
+0000007410 00000 n 
+0000007573 00000 n 
+0000014139 00000 n 
+0000014303 00000 n 
+0000021365 00000 n 
+0000021529 00000 n 
+0000029301 00000 n 
+0000029465 00000 n 
+0000036120 00000 n 
+0000036284 00000 n 
+trailer
+<< /Size 19 /Root 1 0 R >>
+startxref
+39343
+%%EOF

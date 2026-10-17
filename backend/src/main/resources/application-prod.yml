@@ -1,0 +1,37 @@
+# Production overrides. Activate with SPRING_PROFILES_ACTIVE=prod.
+# Everything security relevant is fail-closed: the app refuses to start without
+# the required secrets (see SecretValidator).
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: ${DB_POOL_MAX_SIZE:32}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+# Emit machine-readable (Elastic Common Schema) logs so that collectors such as
+# Filebeat / Fluent Bit / the OpenTelemetry collector can parse them without
+# regex gymnastics. Boot's structured logging needs no extra dependency.
+logging:
+  structured:
+    format:
+      console: ecs
+      file: ecs
+
+management:
+  endpoint:
+    health:
+      show-details: never
+
+server:
+  error:
+    include-message: never
+    include-binding-errors: never
+    include-stacktrace: never
+
+app:
+  security:
+    trust-proxy-headers: true
+    require-https: true
+  cors:
+    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS}

@@ -1,0 +1,3 @@
+# Keeps the directory in version control: the Dockerfile copies /app/public into
+# the runtime image, and Next.js serves anything placed here verbatim
+# (favicon variants, og images, downloadable product PDFs).

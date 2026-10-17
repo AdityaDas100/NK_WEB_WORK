@@ -1,0 +1,422 @@
+openapi: 3.1.0
+
+info:
+  title: NK ETHICAL (IND) LTD - Inquiry Intake API
+  version: 1.0.0
+  description: |
+    Secure intake endpoint for product and contact inquiries submitted through the public
+    landing page.
+
+    ## Guarantees
+    * **Durability** - the inquiry is committed to PostgreSQL *before* `201 Created` is returned.
+      The spreadsheet export is a separate, retried step (a transactional outbox); see
+      `docs/EXPORT.md`.
+    * **Idempotency** - supply an `Idempotency-Key` header and a retried submission returns the
+      original reference with `200 OK` instead of creating a second row.
+    * **No PII in responses or logs** - responses contain only an opaque reference; logs contain
+      masked values and HMAC fingerprints.
+
+    ## Reachability
+    In the recommended deployment the browser never calls this API: the Next.js route handler at
+    `/api/inquiries` proxies the submission server-side, so the service can stay on a private
+    network. Direct browser access is only needed for separate front ends and is gated by a strict
+    CORS allow-list (`app.cors.allowed-origins`).
+
+    ## Errors
+    Every error is an RFC 9457 `application/problem+json` document. Validation failures add an
+    `errors[]` array that the form maps back onto its inputs.
+
+  contact:
+    name: NK ETHICAL (IND) LTD - Web Platform
+    url: https://nkethical.example
+  license:
+    name: Proprietary
+
+servers:
+  - url: http://localhost:8080
+    description: Local development
+  - url: https://api.nkethical.example
+    description: Production (reachable from the Next.js server only)
+
+tags:
+  - name: Inquiry
+    description: Public inquiry intake
+  - name: Operations
+    description: Health and metrics (not part of the public contract)
+
+paths:
+  /api/inquiries:
+    post:
+      tags: [Inquiry]
+      operationId: submitInquiry
+      summary: Submit a product or contact inquiry
+      description: |
+        Validates, sanitises and durably stores an inquiry, then schedules the asynchronous
+        spreadsheet export.
+
+        Sanitising happens **before** validation: markup, control characters and Unicode
+        ambiguities are removed, values are Unicode NFC normalised and truncated to the column
+        widths, and only then are the constraints applied.
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: false
+          description: |
+            Client-generated key (8-64 characters of `A-Z a-z 0-9 . _ : -`, starting with an
+            alphanumeric character). Re-using a key returns the original inquiry instead of
+            creating a duplicate. Values that do not match the pattern are replaced by a generated
+            key rather than rejected.
+          schema:
+            type: string
+            minLength: 8
+            maxLength: 64
+            pattern: '^[A-Za-z0-9][A-Za-z0-9._:-]{7,63}$'
+          example: 8f14e45f-ea3b-4a2f-9c3d-2c1a4b6e7d90
+        - name: X-Request-Id
+          in: header
+          required: false
+          description: Correlation id echoed in the response and in the log stream.
+          schema:
+            type: string
+            maxLength: 64
+            pattern: '^[A-Za-z0-9._:-]+$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InquiryRequest'
+            examples:
+              productInquiry:
+                summary: Wholesale pricing request
+                value:
+                  name: Jane Doe
+                  email: jane.doe@example.com
+                  phone: '+1 555 010 9999'
+                  company: Acme Pharma Ltd
+                  message: >-
+                    We would like pricing for Cardolix 20 (500 mg, 30 tablets) and the EU
+                    stability data before the end of the quarter.
+                  consent: true
+      responses:
+        '201':
+          description: Inquiry stored and queued for export.
+          headers:
+            Location:
+              description: Relative URL of the created reference.
+              schema:
+                type: string
+                example: /api/inquiries/3f2504e0-4f89-41d3-9a0c-0305e82c3301
+            X-Request-Id:
+              schema: { type: string }
+            Cache-Control:
+              schema: { type: string, example: no-store }
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InquiryResponse'
+              examples:
+                accepted:
+                  value:
+                    reference: 3f2504e0-4f89-41d3-9a0c-0305e82c3301
+                    status: RECEIVED
+                    receivedAt: '2026-01-02T03:04:05Z'
+        '200':
+          description: |
+            The `Idempotency-Key` was already used; the original inquiry is returned. The request
+            was **not** stored again.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InquiryResponse'
+              examples:
+                replay:
+                  value:
+                    reference: 3f2504e0-4f89-41d3-9a0c-0305e82c3301
+                    status: DUPLICATE
+                    receivedAt: '2026-01-02T03:04:05Z'
+        '400':
+          description: |
+            Validation failure (`validation-failed`), unreadable body (`malformed-request`) or an
+            unexpected property (the API fails closed).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              examples:
+                validation:
+                  value:
+                    type: https://errors.nkethical.example/validation-failed
+                    title: Validation failed
+                    status: 400
+                    detail: One or more fields are invalid. See 'errors' for details.
+                    code: validation-failed
+                    instance: /api/inquiries
+                    requestId: 1f9a2b3c-4d5e-6f70-8192-a3b4c5d6e7f8
+                    errors:
+                      - field: email
+                        message: Please enter a valid e-mail address.
+                      - field: message
+                        message: Message must be between 10 and 2000 characters.
+        '403':
+          description: |
+            The path is not publicly reachable (deny-by-default policy). Not returned for
+            `POST /api/inquiries`.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '409':
+          description: |
+            The submission conflicts with an existing record for a reason other than a benign
+            idempotent retry.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '411':
+          description: The request has no `Content-Length`; chunked submissions are refused.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              examples:
+                lengthRequired:
+                  value:
+                    type: https://errors.nkethical.example/length-required
+                    title: Length Required
+                    status: 411
+                    detail: A Content-Length header is required for inquiry submissions.
+                    code: length-required
+                    instance: /api/inquiries
+        '413':
+          description: The body exceeds `app.request-limits.max-body-bytes` (default 16 KiB).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '415':
+          description: The request is not `application/json`.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '429':
+          description: |
+            Rate limit exceeded. The response carries `Retry-After` (seconds) and
+            `X-RateLimit-Limit` / `X-RateLimit-Remaining` on the successful path.
+          headers:
+            Retry-After:
+              schema: { type: integer, minimum: 1 }
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              examples:
+                rateLimited:
+                  value:
+                    type: https://errors.nkethical.example/rate-limit-exceeded
+                    title: Too Many Requests
+                    status: 429
+                    detail: Too many submissions from this client. Please wait 42 seconds and try again.
+                    code: rate-limit-exceeded
+                    instance: /api/inquiries
+        '500':
+          description: |
+            Unexpected failure. The body contains a correlation id and nothing that would help
+            fingerprint the deployment.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '503':
+          description: The storage layer is unavailable; the inquiry was not stored.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+    get:
+      tags: [Inquiry]
+      operationId: rejectNonPost
+      summary: Method not allowed
+      description: The endpoint only accepts `POST`; any other method answers `405`.
+      responses:
+        '405':
+          description: Method not allowed.
+          headers:
+            Allow:
+              schema: { type: string, example: POST }
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+    options:
+      tags: [Inquiry]
+      operationId: corsPreflight
+      summary: CORS preflight
+      description: Handled by Spring Security and never blocked by authorization rules.
+      responses:
+        '200':
+          description: Preflight accepted for an allow-listed origin.
+
+  /actuator/health/liveness:
+    get:
+      tags: [Operations]
+      operationId: liveness
+      summary: Liveness probe
+      security: []
+      responses:
+        '200':
+          description: The process is alive.
+  /actuator/health/readiness:
+    get:
+      tags: [Operations]
+      operationId: readiness
+      summary: Readiness probe (checks the database)
+      security: []
+      responses:
+        '200':
+          description: Ready to accept traffic.
+        '503':
+          description: A required dependency is unavailable.
+  /actuator/prometheus:
+    get:
+      tags: [Operations]
+      operationId: prometheusScrape
+      summary: Prometheus metrics
+      description: |
+        Not publicly reachable: only `/actuator/health*` and `/actuator/info` are permitted by the
+        default filter chain. Scrape it over the private network or via an authenticated sidecar.
+      security: []
+      responses:
+        '200':
+          description: Metrics in the Prometheus exposition format.
+          content:
+            text/plain:
+              schema: { type: string }
+        '403':
+          description: Denied by the default deny-by-default policy.
+
+components:
+  schemas:
+
+    InquiryRequest:
+      type: object
+      additionalProperties: false
+      required: [name, email, phone, message, consent]
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 80
+          pattern: "^[\\p{L}\\p{M}][\\p{L}\\p{M} .'\\-]*$"
+          description: |
+            Letters (any script), marks, spaces, apostrophes, hyphens and dots. Sanitised before
+            validation; values that sanitise to fewer than 2 characters are rejected.
+          examples: [Jane Doe]
+        email:
+          type: string
+          format: email
+          maxLength: 254
+          pattern: '^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$'
+          description: Lower-cased and stripped of whitespace and markup before validation.
+          examples: [jane.doe@example.com]
+        phone:
+          type: string
+          minLength: 7
+          maxLength: 24
+          pattern: '^\+?[0-9][0-9 ()\-./]*$'
+          description: Digits plus `+ ( ) - . /` and spaces.
+          examples: ['+1 555 010 9999']
+        company:
+          type: string
+          maxLength: 120
+          nullable: true
+          pattern: "^[\\p{L}\\p{M}0-9 .,&'()/\\-]*$"
+          description: Optional organisation. Omit the field entirely when the visitor leaves it blank.
+          examples: [Acme Pharma Ltd]
+        message:
+          type: string
+          minLength: 10
+          maxLength: 2000
+          description: Free text. Markup and control characters are removed; at most one blank line in a row is kept.
+          examples: [We would like pricing for Cardolix 20 and the EU stability data.]
+        consent:
+          type: boolean
+          description: Must be `true`; the visitor has accepted the privacy notice.
+          const: true
+
+    InquiryResponse:
+      type: object
+      required: [reference, status, receivedAt]
+      properties:
+        reference:
+          type: string
+          format: uuid
+          description: Opaque public reference the visitor can quote in support requests.
+        status:
+          type: string
+          enum: [RECEIVED, DUPLICATE]
+          description: |
+            `RECEIVED` for a newly stored inquiry (`201`), `DUPLICATE` when an idempotency key
+            replayed an already accepted submission (`200`).
+        receivedAt:
+          type: string
+          format: date-time
+          description: Server-side acceptance timestamp (UTC).
+
+    Problem:
+      type: object
+      description: RFC 9457 problem document.
+      required: [type, title, status, detail, code]
+      properties:
+        type:
+          type: string
+          format: uri
+          example: https://errors.nkethical.example/validation-failed
+        title:
+          type: string
+          example: Validation failed
+        status:
+          type: integer
+          example: 400
+        detail:
+          type: string
+          description: Human readable explanation. Never contains a stack trace or a database message.
+        code:
+          type: string
+          description: Stable machine readable code.
+          enum:
+            - validation-failed
+            - malformed-request
+            - method-not-allowed
+            - unsupported-media-type
+            - not-found
+            - conflict
+            - forbidden
+            - length-required
+            - payload-too-large
+            - rate-limit-exceeded
+            - storage-unavailable
+            - internal-error
+        instance:
+          type: string
+          example: /api/inquiries
+        requestId:
+          type: string
+          description: Correlation id; quote it when contacting support.
+        errors:
+          type: array
+          description: Present for validation failures only.
+          items:
+            type: object
+            required: [field, message]
+            properties:
+              field:
+                type: string
+                example: email
+              message:
+                type: string
+                example: Please enter a valid e-mail address.
+
+  securitySchemes: {}

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="384 188 1156 706" role="img" aria-label="N.K. Ethical (Ind) Ltd logo">
+  <title>N.K. Ethical (Ind) Ltd logo</title>
+  <defs>
+    <linearGradient id="nk-blade" gradientUnits="userSpaceOnUse" x1="932" y1="202" x2="932" y2="748">
+      <stop offset="0" stop-color="#4d9de0" />
+      <stop offset="0.25" stop-color="#2e7fc4" />
+      <stop offset="0.5" stop-color="#2e609b" />
+      <stop offset="0.75" stop-color="#3f4097" />
+      <stop offset="1" stop-color="#232a6b" />
+    </linearGradient>
+    <filter id="nk-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#2e7fd6" flood-opacity="0.45" />
+    </filter>
+  </defs>
+  <path
+    fill="url(#nk-blade)"
+    d="M921,202 L574,742 L592,736 L604,723 L623,704 L647,680 L671,656 L695,632 L719,608 L734,592 L754,572 L774,552 L794,532 L814,512 L834,492 L854,472 L866,460 L870,452 L875,428 L880,404 L885,380 L890,356 L895,332 L900,308 L905,284 L910,260 L915,236 L920,212 Z"
+  />
+  <path
+    fill="url(#nk-blade)"
+    d="M943,202 L1290,742 L1272,736 L1260,723 L1241,704 L1217,680 L1193,656 L1169,632 L1145,608 L1130,592 L1110,572 L1090,552 L1070,532 L1050,512 L1030,492 L1010,472 L998,460 L994,452 L989,428 L984,404 L979,380 L974,356 L969,332 L964,308 L959,284 L954,260 L949,236 L944,212 Z"
+  />
+  <g fill="#2b2fa0" filter="url(#nk-glow)">
+    <text
+      x="962"
+      y="736"
+      text-anchor="middle"
+      font-family="Arial, Helvetica, sans-serif"
+      font-size="178"
+      font-weight="700"
+      textLength="473"
+      lengthAdjust="spacingAndGlyphs"
+    >NKEL</text>
+    <text
+      x="961"
+      y="857"
+      text-anchor="middle"
+      font-family="Arial, Helvetica, sans-serif"
+      font-size="98"
+      font-weight="700"
+      textLength="1127"
+      lengthAdjust="spacingAndGlyphs"
+    >N.K. ETHICAL (IND) LTD</text>
+  </g>
+</svg>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.1.1</version>
+        <relativePath/> <!-- always resolve from the repository -->
+    </parent>
+
+    <groupId>com.nkweb</groupId>
+    <artifactId>pharma-inquiry-service</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>pharma-inquiry-service</name>
+    <description>Secure inquiry intake API for the NK ETHICAL (IND) LTD landing page</description>
+
+    <properties>
+        <!--
+          Source/target level. Java 25 is the current LTS: it produces class files that run on
+          any JDK >= 25 (including the JDK 27 toolchain used locally). Bump this property when
+          you are ready to move the build to a newer LTS baseline.
+        -->
+        <java.version>25</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Not managed by the Spring Boot BOM -->
+        <poi.version>5.5.1</poi.version>
+        <jsoup.version>1.21.1</jsoup.version>
+
+        <surefire.args>-XX:+EnableDynamicAgentLoading -Dnet.bytebuddy.experimental=true</surefire.args>
+    </properties>
+
+    <dependencies>
+        <!--
+          Web / REST. `spring-boot-starter-web` still exists in Boot 4 but is deprecated in favour
+          of `spring-boot-starter-webmvc` (same contents: Jackson + Tomcat + Spring MVC).
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
+        </dependency>
+
+        <!-- Jakarta Bean Validation (JSR 380) + Hibernate Validator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- Spring Security: HTTPS enforcement, security headers, CORS, authorization -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- Persistence: Spring Data JPA (Hibernate) + HikariCP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!--
+          Schema migrations: Flyway.
+          `flyway-core` is only the migration *engine*. Boot 4 modularised the autoconfiguration
+          (one module per technology, e.g. `spring-boot-jpa`, `spring-boot-hibernate`), and the
+          module that reads `spring.flyway.*` and actually runs the migrations at start-up is
+          `spring-boot-flyway`. It is NOT pulled in transitively by the data-jpa starter, so
+          without the explicit dependency below every `spring.flyway.*` property is silently
+          ignored and no migration is ever applied (Hibernate then fails its schema validation).
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-flyway</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+        </dependency>
+
+        <!-- PostgreSQL JDBC driver -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Operational endpoints: health, metrics, Prometheus scrape endpoint -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Excel (.xlsx) generation for the asynchronous export worker -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+
+        <!-- HTML markup stripping for input sanitization -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+
+        <!-- Configuration metadata for the @ConfigurationProperties records -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Tests -->
+        <!--
+          Boot 4 split the old single test starter: `spring-boot-starter-test` no longer brings
+          MockMvc/`@AutoConfigureMockMvc` (`AutoConfigureMockMvc` now lives in
+          org.springframework.boot.webmvc.test.autoconfigure). This starter adds them back and
+          transitively includes `spring-boot-starter-test`.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- In-memory PostgreSQL-compatible database so the test suite needs no Docker -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>pharma-inquiry-service</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.nkweb.pharma.PharmaInquiryApplication</mainClass>
+                    <layers>
+                        <enabled>true</enabled>
+                    </layers>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>${java.version}</release>
+                    <parameters>true</parameters>
+                    <compilerArgs>
+                        <arg>-Xlint:all,-serial,-processing</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>${surefire.args}</argLine>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

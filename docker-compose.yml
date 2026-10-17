@@ -1,0 +1,126 @@
+# ---------------------------------------------------------------------------
+# Local / single-host deployment: PostgreSQL 16 + Spring Boot intake API +
+# Next.js marketing site.
+#
+#   copy .env.example .env   (edit the secrets)
+#   docker compose up --build
+#
+#   site      -> http://localhost:3000
+#   api       -> http://localhost:8080 (POST /api/inquiries, /actuator/health)
+#   database  -> localhost:5432
+#
+# The exported workbook lives in the `exports` volume; see docs/EXPORT.md for
+# the Google Sheets alternative and for how to rebuild the file from the DB.
+# ---------------------------------------------------------------------------
+name: nk-ethical-pharma
+
+services:
+  db:
+    # Tracks the 16.x line, matching the PostgreSQL 16.5.x instance this project
+    # was developed against. Pin an exact patch (postgres:16.10-alpine) if you
+    # need byte-identical environments.
+    image: postgres:16-alpine
+    container_name: nk-ethical-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-pharma}
+      POSTGRES_USER: ${POSTGRES_USER:-pharma}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      # Deterministic collation for reproducible ordering in reports.
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    command:
+      - postgres
+      - -c
+      - max_connections=100
+      # Log anything slower than 500 ms: the workload is a handful of tiny writes.
+      - -c
+      - log_min_duration_statement=500
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-pharma} -d ${POSTGRES_DB:-pharma}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: nk-ethical/pharma-inquiry-service:1.0.0
+    container_name: nk-ethical-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Spring Boot maps these to spring.datasource.* (see application.yml).
+      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-pharma}
+      DB_USER: ${POSTGRES_USER:-pharma}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      APP_HASH_SECRET: ${APP_HASH_SECRET:?set APP_HASH_SECRET in .env}
+      APP_CORS_ALLOWED_ORIGINS: ${APP_CORS_ALLOWED_ORIGINS:-http://localhost:3000}
+      APP_TRUST_PROXY_HEADERS: ${APP_TRUST_PROXY_HEADERS:-false}
+      APP_REQUIRE_HTTPS: ${APP_REQUIRE_HTTPS:-false}
+      RATE_LIMIT_PER_MINUTE: ${RATE_LIMIT_PER_MINUTE:-10}
+      RATE_LIMIT_BURST: ${RATE_LIMIT_BURST:-5}
+      RATE_LIMIT_GLOBAL_PER_MINUTE: ${RATE_LIMIT_GLOBAL_PER_MINUTE:-600}
+      EXPORT_ENABLED: ${EXPORT_ENABLED:-true}
+      EXPORT_SINKS: ${EXPORT_SINKS:-excel}
+      EXPORT_DIRECTORY: /app/data/exports
+      GOOGLE_SHEETS_WEBHOOK_URL: ${GOOGLE_SHEETS_WEBHOOK_URL:-}
+      GOOGLE_SHEETS_TOKEN: ${GOOGLE_SHEETS_TOKEN:-}
+      LOG_LEVEL_APP: ${LOG_LEVEL_APP:-INFO}
+      # Enables the Ctrl-C-friendly shutdown and keeps the heap inside the
+      # container limit; the JVM defaults would ignore the cgroup limit.
+      JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=75 -XX:+ExitOnOutOfMemoryError"
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    volumes:
+      # The workbook is derived state: keep it on a volume so a restart does not
+      # silently start a second, empty export file.
+      - exports:/app/data/exports
+      - backend-logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health/readiness"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+      start_period: 40s
+    security_opt:
+      - no-new-privileges:true
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # NEXT_PUBLIC_* values are inlined at build time, so they must be known here.
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    image: nk-ethical/pharma-web:1.0.0
+    container_name: nk-ethical-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      # Server-side only: the browser never sees this URL. Requests are proxied
+      # through the Next.js route handler at /api/inquiries.
+      API_BASE_URL: http://backend:8080
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      CLIENT_IP_HASH_SECRET: ${CLIENT_IP_HASH_SECRET:?set CLIENT_IP_HASH_SECRET in .env}
+      RATE_LIMIT_PER_MINUTE: ${FRONTEND_RATE_LIMIT_PER_MINUTE:-5}
+      RATE_LIMIT_BURST: ${FRONTEND_RATE_LIMIT_BURST:-2}
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  db-data:
+  exports:
+  backend-logs:
